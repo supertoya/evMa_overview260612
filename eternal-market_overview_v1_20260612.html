@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>永遠闇市 — ゲーム概要資料（はじめての人向け・完全版）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#d8d2c6; --dim:#9a948a; --bg0:#0a0d12; --bg1:#10151d;
+    --blue:#7fd6e8; --orange:#f4a02a; --line:#2a313c; --panel:#141a23;
+    --gold:#e8c272; --good:#7fe0a0; --bad:#e07f7f;
+    --paper:#e7ddc4; --paperline:#b3a685; --paperink:#3c3426; --paperdim:#7a6e54;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh; color:var(--ink);
+    font-family:'DotGothic16','Hiragino Kaku Gothic ProN',monospace;
+    background:
+      radial-gradient(900px 600px at 15% 6%, rgba(127,214,232,.10), transparent 60%),
+      radial-gradient(800px 600px at 85% 94%, rgba(244,160,42,.10), transparent 60%),
+      linear-gradient(160deg,var(--bg1),var(--bg0));
+    letter-spacing:.02em; line-height:1.9;
+  }
+  .wrap{max-width:980px; margin:0 auto; padding:26px 18px 90px;}
+  h1{font-size:30px; letter-spacing:.1em; margin:6px 0 2px; text-shadow:0 0 18px rgba(244,160,42,.35);}
+  h2{font-size:19px; margin:48px 0 12px; padding:6px 12px; border-left:6px solid var(--orange);
+     background:linear-gradient(90deg, rgba(244,160,42,.12), transparent 70%);}
+  h3{font-size:15px; margin:24px 0 8px; color:var(--gold);}
+  p{margin:8px 0; font-size:13.5px;}
+  a{color:var(--blue);}
+  .sub{color:var(--dim); font-size:12px;}
+  .note{color:var(--dim); font-size:12px; line-height:1.9;}
+  .panel{background:var(--panel); border:2px solid var(--line); padding:13px 16px; border-radius:8px; margin:10px 0;}
+  .coin{color:var(--gold); text-shadow:0 0 10px rgba(232,194,114,.45);}
+  table{border-collapse:collapse; width:100%; font-size:13px; margin:10px 0;}
+  th,td{border:1px solid var(--line); padding:6px 9px; text-align:left; vertical-align:top;}
+  th{background:#0d1219; color:var(--gold); font-weight:normal; white-space:nowrap;}
+  .nav{display:flex; flex-wrap:wrap; gap:6px; margin:18px 0 6px;}
+  .nav a{font-size:12px; border:1.5px solid var(--line); border-radius:9px; padding:2px 10px; text-decoration:none; color:var(--ink); background:#0d1219;}
+  .nav a:hover{border-color:var(--orange);}
+  .kpi{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin:12px 0;}
+  .kpi .k{background:#0d1219; border:1.5px solid var(--line); border-radius:8px; padding:9px 12px; text-align:center;}
+  .kpi .k .v{font-size:18px; color:var(--gold);}
+  .kpi .k .l{font-size:11px; color:var(--dim);}
+  .flow{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:12px 0;}
+  .step{background:#5d4426; border:2px solid #3a2a16; color:#e8d9b8; padding:5px 13px; border-radius:5px; font-size:13px; box-shadow:0 3px 6px rgba(0,0,0,.4);}
+  .step.win{background:#2a2240; border-color:#161126; color:#b9addd; font-size:11px; padding:4px 9px;}
+  .flow .arr{color:var(--dim);}
+  ol{font-size:13px; padding-left:1.6em;} ol li{margin:7px 0;}
+  ul.dash{list-style:none; padding-left:2px; font-size:13px;} ul.dash li{margin:5px 0; padding-left:1.2em; text-indent:-1.2em;}
+  ul.dash li::before{content:'▸ '; color:var(--orange);}
+  .seal{display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; font-size:11px; color:#f7efdc; vertical-align:-4px; box-shadow:inset 0 0 0 2px rgba(255,255,255,.16);}
+  .seal.C{background:#a07a48;} .seal.UC{background:#5d86aa;} .seal.R{background:#c69a2e;}
+  /* 主人公カード（革マット調）／遺物カード（紙） */
+  .cards{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:12px; margin:12px 0;}
+  .hero{border:2px solid #2a3350; border-radius:10px; padding:11px 13px; background:linear-gradient(180deg,#222838,#181d2a); box-shadow:0 4px 10px rgba(0,0,0,.45);}
+  .hero .hname{font-size:15px; color:#cfe6f0; margin-top:2px;}
+  .hero .htag{display:inline-block; font-size:11px; color:var(--blue); letter-spacing:.18em; border:1px solid rgba(127,214,232,.35); border-radius:6px; padding:0 8px;}
+  .hero .body{font-size:13px; margin-top:7px;}
+  .hero .body b{color:#ffd9a0; font-weight:normal;}
+  .relic{border:1.5px solid var(--paperline); border-radius:8px; padding:11px 13px 12px; position:relative; background:linear-gradient(180deg,#ece2c8,#ded2b2); color:var(--paperink); box-shadow:0 4px 9px rgba(0,0,0,.5);}
+  .relic .rname{font-size:15px; color:#2e2719;}
+  .relic .sys{font-size:11px; color:var(--paperdim); letter-spacing:.14em;}
+  .relic .body{font-size:13px; margin-top:6px;}
+  .relic .meta{font-size:11px; color:var(--paperdim); border-top:1px dashed var(--paperline); margin-top:8px; padding-top:5px;}
+  .cost{position:absolute; top:9px; right:10px; width:30px; height:30px; border-radius:50%; background:#c9a14a; color:#3a2a08; display:flex; align-items:center; justify-content:center; font-size:15px; box-shadow:inset 0 0 0 2px rgba(255,255,255,.3), 0 1px 3px rgba(0,0,0,.4);}
+  .timing{display:inline-block; font-size:11px; border:1px solid var(--paperline); border-radius:8px; padding:0 8px; background:#f0e7cd; color:#5a4c34; margin-right:5px;}
+  /* ストーリー（折りたたみ） */
+  .story{border:1.5px solid var(--line); border-radius:8px; background:#0d1219; padding:7px 13px; margin:7px 0;}
+  .story summary{cursor:pointer; color:var(--gold); font-size:14px;}
+  .story summary::marker{color:var(--orange);}
+  .story .d{display:inline-block; border:1px solid rgba(127,214,232,.4); color:var(--blue); font-size:11px; border-radius:6px; padding:0 8px; margin-right:8px;}
+  .story .alias{color:var(--dim); font-size:12px; margin-left:6px;}
+  .story p{font-size:13px; line-height:2.05; color:var(--ink); margin:8px 2px 4px;}
+  .spoiler{border:1.5px dashed var(--bad); border-radius:8px; padding:10px 14px; background:rgba(224,127,127,.05);}
+  figure{margin:14px 0;} figcaption{font-size:11px; color:var(--dim); text-align:center; margin-top:4px;}
+  .src{font-size:11px; color:var(--dim); border-top:1px solid var(--line); margin-top:54px; padding-top:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="sub">EVER MARKET — GAME OVERVIEW（制作チーム向け・内容のみの完全版）</div>
+<h1>永遠闇市</h1>
+<div class="sub">月の消える夜、決闘競売 ─ ゲーム概要資料 v1　最終更新：2026-06-12　※本資料は確定済みルールに基づく（出典は文末）</div>
+
+<div class="nav">
+  <a href="#s1">① これは何か</a><a href="#s2">② 世界観</a><a href="#s3">③ ゲームの流れ</a><a href="#s4">④ 商品と客</a>
+  <a href="#s5">⑤ 判定と経済</a><a href="#s6">⑥ 遺物</a><a href="#s7">⑦ 主人公</a><a href="#s8">⑧ 設定とアナログ運用</a><a href="#s9">⑨ 開発状況</a>
+</div>
+
+<h2 id="s1">① これは何か</h2>
+<p>「永遠闇市」は、<b>2人対戦のテーブルゲーム</b>（デジタル試作あり・アナログでの遊びも想定）。プレイヤーは闇市の<b>商人</b>となり、客の「ほしい品」の条件に合う<b>商品（ピンズ）</b>を陳列して、相手の商人と客を取り合う<b>決闘競売</b>を行う。条件をより多く満たした側がその客を獲得し、<span class="coin">コイン</span>を得る。</p>
+<div class="kpi">
+  <div class="k"><div class="v">2人</div><div class="l">対面（1台共有 or アナログ）</div></div>
+  <div class="k"><div class="v">5ターン</div><div class="l">1試合（約20〜30分）</div></div>
+  <div class="k"><div class="v">コイン最多</div><div class="l">最終勝利条件</div></div>
+  <div class="k"><div class="v">⚡20コイン</div><div class="l">先に到達で即勝利（強制勝利）</div></div>
+</div>
+<table>
+  <tr><th>使うもの</th><th>内容</th></tr>
+  <tr><td>商品（ピンズ）</td><td>各自 <b>20個</b> のデッキ。8つの特性（後述の8軸）を持つ小物。補充なし＝5ターンで使い切る</td></tr>
+  <tr><td>客カード</td><td>各自 <b>20枚</b> のデッキ（<span class="seal C">C</span>コモン12／<span class="seal UC">UC</span>アンコモン6／<span class="seal R">R</span>レア2）。レア度＝条件の数と報酬</td></tr>
+  <tr><td>コインチップ</td><td>各自 <b>20枚</b> のプール（チップ循環。手元のチップ＝得点＝遺物の支払い原資）</td></tr>
+  <tr><td>遺物カード</td><td>各自 <b>10枚</b> の山（全14種から構成。コインを払って使うアクティブ効果）</td></tr>
+  <tr><td>主人公カード</td><td>各自 <b>1枚</b>（12人から選択。常時パッシブ＋1試合1回の必殺技）</td></tr>
+</table>
+
+<h2 id="s2">② 世界観</h2>
+<h3>世界の骨格</h3>
+<ul class="dash">
+  <li><b>起源</b>：千年前、無表情の使者グランスが、強い欲を持つ十二人を「魔遺物の回収」の名目で集めた。その魔遺物——十二の欲が揃うことで生まれる鍵こそ、封じられた契約の神<b>ラフ=ヴェル</b>を解き放つ最後の鍵だった。十二人の願いは最も歪んだ形で叶えられ、引き換えに終わらぬ命を背負わされた。</li>
+  <li><b>ラフ=ヴェル</b>：口にした言葉がすべて契約になる神。だから滅多に語らない（寡黙は必然＝言わせて縛るのが唯一の攻略）。封印解放時に完全体になれず、本体を十二人の躰に分散——それが不老不死の正体。完全復活には十二人の再集結が要る。</li>
+  <li><b>永遠闇市</b>：月が天から消える夜にだけ湧く世界最大の闇市。願いが叶うという噂は、散った十二人を呼び寄せる撒き餌＝罠。月が消えたまま夜は明けなくなり、誰にも気づかれぬまま復活の儀が進む。</li>
+  <li><b>神々＝十二柱</b>：太古ラフ=ヴェルを封じた代償に神籍を失い、月の裏に縛られた。月の消える夜だけ、人ならぬ姿の依代で市に降りる——客として、敵として。</li>
+  <li><b>核</b>：望みを一つも違えず叶える唯一の至宝。決闘競売を制した勝者ひとりの掌に渡る——というのが、表向きの建前。「核を手にした過去の優勝者の話を、誰も知らない」。</li>
+</ul>
+<h3>物語とゲームの対応</h3>
+<table>
+  <tr><th>物語</th><th>ゲーム上の姿</th></tr>
+  <tr><td>十二人（欲を背負う不死者）</td><td><b>主人公カード12人</b>（⑦）。欲の名がそのまま能力の方向性</td></tr>
+  <tr><td>神々（十二柱の依代）</td><td><span class="seal R">R</span>レア客「神の依代」（条件5・報酬4と最重量）</td></tr>
+  <tr><td>ヤルナ・ヴィエル（市の主催）</td><td>ヴァルニエルの偽名。切札「任意の客1人を流す」は後フェーズで実装予定</td></tr>
+  <tr><td>欲の対価</td><td><span class="coin">コイン</span>（チップ）。稼ぐほど勝利に近づき、遺物に使えば力に変わる</td></tr>
+</table>
+<h3>三層真相（制作メンバー向け・ネタバレ）</h3>
+<div class="spoiler">
+<table>
+  <tr><th>層</th><th>開示</th><th>内容</th></tr>
+  <tr><td>第1層</td><td>冒頭〜第1弾</td><td>十二人が核を賭け決闘競売。敵は競争相手のみに見える。ヤルナ＝中立の運営者</td></tr>
+  <tr><td>第2層</td><td>中盤</td><td>市は撒き餌。客の欲望はラフ=ヴェルの糧。ヤルナは開催を命じられた十二人の一人</td></tr>
+  <tr><td>第3層</td><td>終盤</td><td>本体は十二人に分散、真目的は再集結＝完全復活の儀。攻略＝契約の神に「言わせて」縛る</td></tr>
+</table>
+</div>
+<h3>十二人の渇き — 願いは、最も残酷な形で叶う（クリックで全文）</h3>
+<details class="story"><summary><span class="d">無欲</span>ヴァルニエル<span class="alias">（偽名ヤルナ・ヴィエル）</span></summary><p>「欲しいものなど、何もない」——それがヴァルニエルだった。差し出された黄金にも、すがる愛にも、永遠の命にさえ、彼女の瞳は凪いだまま、さざ波ひとつ立たない。喜びも飢えも知らず、ただ静かに、完璧に、何も欲さない。だが本来、欲を持たぬ生者などこの世にあってはならない。人は皆、何かに焦がれることで辛うじて人でいられる。欲の不在を極限まで研ぎ澄ました彼女は、もはや人の形をした"欲の真空"——その底なしの空白こそが、ラフ=ヴェルにとって何より完璧な器だった。十二人で唯一、彼女は復活の儀の中核に据えられ、市の主催"ヤルナ・ヴィエル"を名乗らされる。卓の向こうで欲に灼かれ、狂い、奪い合う客たちを最前列から永遠に見届けながら——彼女はただ、いつか自分の胸にも"欲しい"の灯がともる日を待つ。ともらぬまま、千年の空白だけが、雪のように降り積もっていく。</p></details>
+<details class="story"><summary><span class="d">知識欲</span>ヴィオラ・セルンティア</summary><p>「この世の全てを知り尽くしたい。知の探究のために、永遠の命と、朽ちぬ若い体が欲しい」と願った。それは確かに聞き届けられた——ただし、時間が逆流するという、最も惨い形で。新たな知を一つ得るたび、彼女の躰は一つ幼く戻っていく。百の書物を読めば少女に、千の理を識れば幼子に。膨れ上がる叡智に対し、それを容れる器ばかりが、容赦なく縮んでいく。これ以上幼くなれば、もはや思考すら覚束なくなる——そう悟った日、彼女は初めて知を恐れ、ページを閉じ、固く目を瞑った。だが一度巻き戻り始めた時の針は、二度と止まらない。求めることをやめても、ただ生きるだけで時は遡る。諦めたはずの知の重みと、こぼれ落ちていく自分の躰との狭間で、彼女は今日も、終わらない千年を生き続けている。</p></details>
+<details class="story"><summary><span class="d">王権欲</span>ガッヅォル・レグシオール</summary><p>「万人をひれ伏させ、頂点に立つただ一人の王でありたい」と願った。願いは寸分違わず叶えられた——彼に跪く者が、ただの一人も残らないという形で。戴冠のその夜、国境の村から黒い疫病が湧き、燎原の火のごとく広がって、ひと月を待たず万民は死に絶えた。残されたのは、誰一人いない大広間と、磨き抜かれた完璧な王権、そして頭上でいつまでも輝く王冠だけ。命じるべき臣下も、傅く民も、敵対する者すら、もうどこにもいない。それでも彼は、玉座を降りることができない。王であることだけが、彼に残された唯一だから。無人の宮殿に虚しく響くのは、誰の耳にも届かぬ勅令ばかり。完璧な王のまま、彼は永遠に、誰もいない王国をただ独り、統べ続けている。</p></details>
+<details class="story"><summary><span class="d">不朽欲</span>リーノ・マルモット</summary><p>「決して朽ちることのない、完璧な美であり続けたい」と願った。願いは、奇妙な形で叶えられた——「完成させなければ、決して朽ちない」という形で。彼は自らの姿を写した一体の像を刻む彫刻家となる。鑿を入れるたび、像は神々しいまでの美へと近づいていく。だが、あと一彫りで完璧、というまさにその一歩手前で、彼の手は必ず止まる。完成させた瞬間、それは"過去"のものとなり、そこから朽ち始める——そんな恐怖が、どうしても拭えないのだ。だから彼は削った頬をまた盛り、整えた指をまた削る。永遠に未完のまま、千年、自分という像を彫っては壊し、壊しては彫り直し続けている。決して朽ちることなく。そして、決して完成することもなく。</p></details>
+<details class="story"><summary><span class="d">食欲</span>リリゲウ</summary><p>「腹いっぱい喰らいたい。喰って喰って、満ち足りるまで、ただ喰らい尽くしたい」と願った。願いは叶った——永遠に満たされないという形で。彼の腹は底が抜けたように、どれだけ詰め込んでも満ちることがない。山と積まれた肉も、樽いっぱいの酒も、喉を過ぎた瞬間に消え失せ、飢えだけがまた鎌首をもたげる。しかも舌は、最初の一口で味を忘れてしまった。何を口に運んでも、砂を噛むように味気ない。それでも腹の底の飢餓だけは、灼けるように本物で、彼を喰うことへと駆り立て続ける。彼は今も市の片隅の食堂で、客に山ほどの御馳走を振る舞いながら、自分は決して満たされぬ飢えを抱え、味のない料理をただ永遠に喰らい続けている。</p></details>
+<details class="story"><summary><span class="d">睡眠欲</span>チュウカット・アンモク</summary><p>「ただ、ぐっすりと眠りたい。何も考えず、泥のように深く眠りに落ちたい」と願った。願いは、最も意地の悪い形で叶った——永遠に「眠る直前」で止められるという形で。瞼は鉛のように重く、意識は甘く霞み、あと一歩で眠りに沈む。そのまさに寸前、必ず何かが彼を現実へと引き戻す。物音、痛み、あるいは何の理由もなく、ただ。千年、彼は一睡もできていない。眠気だけが骨の髄まで積もり、頭は綿を詰めたように鈍く重い。それでも決して、落ちられない。夢見の宿の主として旅人に極上の眠りを供しながら、彼自身は、決して辿り着けぬ眠りの岸辺で、ただ揺蕩い続けている。誰よりも眠りを売る男が、世界で誰より眠れずにいる。</p></details>
+<details class="story"><summary><span class="d">性欲</span>セラフィカ・ディエンダス</summary><p>「もっと熱く、誰かと溶け合いたい。肌を重ね、求め、求められ続けたい」と願った。願いは叶った——触れた相手が、必ず冷めていくという形で。彼女が抱けば抱くほど、相手の熱は急速に失われ、やがて灰のように関心を失って離れていく。求めれば逃げられ、近づけば冷められる。残るのは、満たされぬまま燃え盛る、彼女自身の渇きだけ。千年、彼女は数え切れぬ腕に抱かれ、そのすべてに置き去りにされてきた。誰よりも熱を渇望しながら、誰の心にも長くは留まれない。紅の灯る店の奥で、彼女は今も、決して鎮まらない火照りを持て余し、次の——そしてまた必ず去っていく——温もりを、虚しく求め続けている。</p></details>
+<details class="story"><summary><span class="d">金銭欲</span>クラウベ・サトリ</summary><p>「金が欲しい。唸るほどの金を手にして、何不自由なく豊かに暮らしたい」と願った。願いは叶った——使い道だけが、永遠に失われるという形で。彼の蔵には黄金が湧き、増え、唸るほどに積み上がっていく。だが、いざ使おうとすると、必ず何かが狂う。買おうとした品は売り切れ、招こうとした客は来ず、味わおうとした美酒は手の中で水に変わる。富は宇宙ほどに膨れ上がるのに、その一枚すら、喜びには換えられない。彼は世界一の富豪でありながら、世界一貧しい。両替商の帳場で延々と金貨を数えながら、彼は今も、決して使えぬ富の山に埋もれ、豊かさという名の砂漠を、ただ独り歩き続けている。</p></details>
+<details class="story"><summary><span class="d">物欲</span>シジマ・ノーメン</summary><p>「あれも、これも欲しい。新しいものを、次々と手に入れ続けたい」と願った。願いは叶った——手に入れた瞬間、それが色褪せるという形で。欲しくてたまらなかった品も、指が触れたその刹那、ぴたりと輝きを失い、ただのがらくたに変わる。彼女の心を焦がすのは、いつも「まだ手にしていないもの」だけ。満たされたくて、彼女は手当たり次第に集めた。だが部屋を埋め尽くす戦利品は、どれも一瞬で色を失った残骸ばかり。欲しいという疼きだけが永遠に新しく、手にした喜びだけが一瞬で古びていく。万屋の店先で、彼女は今日も、次の「欲しい」を探して目を血走らせ、決して満たされぬまま、がらくたの山を築き続けている。</p></details>
+<details class="story"><summary><span class="d">自由欲</span>ナギ・レス</summary><p>「何にも縛られたくない。しがらみも、義務も、絆も——すべてから自由になりたい」と願った。願いは叶った——あらゆるものから、解き放たれすぎるという形で。彼を縛るものは、何ひとつなくなった。国も、家も、名も、彼を引き留めない。だが同時に、彼を必要とする者も、待つ者も、覚えている者も、ただの一人もいなくなった。完全な自由とは、完全な無縁のことだった。どこへでも行けるのに、どこにも居場所がない。誰にも縛られないかわりに、誰とも繋がれない。彼は千年、根を下ろすことを許されぬまま、地図にない道を独りさすらい続けている。風のように自由で、そして風のように、誰の記憶にも留まらずに。</p></details>
+<details class="story"><summary><span class="d">遊興欲</span>フルル・メモタン</summary><p>「面白おかしく遊び暮らしたい。刺激と快楽に、いつまでも酔いしれていたい」と願った。願いは叶った——あらゆる快楽に、すぐ慣れてしまうという形で。どんな美酒も、どんな賭けも、どんな見世物も、最初の数度こそ彼を痺れさせる。だがすぐに舌は鈍り、心は凪ぎ、同じ刺激ではもう何も感じなくなる。より強く、より過激に。彼は刺激の階段を駆け上がり続けたが、てっぺんなど初めから無かった。今や世界中のいかなる悦楽も、彼の心をさざ波ほども揺らさない。賭博場の喧騒の中心で、彼は誰より退屈している。終わらない宴の王として、二度と訪れぬ「楽しい」を求め、虚ろな笑みのまま、永遠に遊び続けている。</p></details>
+<details class="story"><summary><span class="d">闘争欲</span>デスデス・モルテシオン</summary><p>「戦いたい。強敵と命を懸けて打ち合い、勝ち続けていたい」と願った。願いは叶った——やがて、戦う相手がいなくなるという形で。彼は強かった。挑む者をことごとく打ち倒し、好敵手を、宿敵を、軍勢を、一人また一人と打ち破っていった。そして気づけば、彼に立ち向かえる者は、この世から一人残らず消えていた。不死の彼に、もはや脅威はない。命を懸ける緊張も、勝利の歓喜も、二度と訪れない。残ったのは、振るう先を失った力と、空を切る刃の音、そして永遠に続く退屈だけ。闘技場の中央で、彼は今も、来るはずのない強敵を待ち続けている。戦いだけが生きる意味だった男が、戦えないという地獄を生きている。</p></details>
+
+<h2 id="s3">③ ゲームの流れ（1ターン＝5フェーズ × 5ターン）</h2>
+<div class="flow">
+  <span class="step">① 仕込み（秘匿）</span><span class="arr">▶</span>
+  <span class="step">② 公開</span><span class="step win">宣言窓</span><span class="arr">▶</span>
+  <span class="step">③ 調整（交互）</span><span class="arr">▶</span>
+  <span class="step win">宣言窓</span><span class="step">④ 判定</span><span class="arr">▶</span>
+  <span class="step">⑤ 片付け</span>
+</div>
+<ol>
+  <li><b>仕込み（秘匿）</b>：客がまだ見えない状態で、自分の残りピンズから <b>4個</b> を選び、陳列①〜④に並べる（アナログはついたて等で隠す／デジタルは端末を回して交代）。</li>
+  <li><b>公開</b>：各自の客デッキの上から2枚（計<b>4枚</b>）が場に出て、両者の陳列も公開。<b>陳列①＝客①…と位置で対応</b>して競る。
+    <br><span class="note">▸ 宣言窓（公開直後）：このタイミングの遺物（香炉・忘却・鍵・楔）や必殺技（果し状）は<b>両者同時に伏せて出し、先行側から解決</b>。</span></li>
+  <li><b>調整（公開・交互）</b>：先行→後攻の順に手番。1手番＝「<b>自分のピン2つの位置を入れ替える</b>」か「パス」。<b>各自2回まで</b>。両者連続パスで終了。
+    <br><span class="note">▸ 先行は<b>コイン劣勢側</b>（同点ならターンごとに交代・T1=P1）。調整中タイミングの遺物（錘・砂時計・賽・天秤）はこの間に使う。</span></li>
+  <li><b>判定</b>：客ごとに両者のピンが条件をいくつ満たすか数え、<b>多い側がその客を獲得＝客のvp分のコイン</b>を得る。
+    <br><span class="note">▸ 宣言窓（判定直前）：盃・呪印・酒宴・仮面や必殺技（勅令など）は<b>同時伏せ→先行側から解決</b>してから判定。</span></li>
+  <li><b>片付け</b>：陳列した4個は消費（山に戻らない）。20個＝4個×5ターンでちょうど使い切る。羅針はこのタイミング。</li>
+</ol>
+
+<h2 id="s4">④ 商品（ピンズ）と客</h2>
+<h3>商品の8軸 — すべての判定の語彙</h3>
+<table>
+  <tr><th>軸</th><th>とりうる値</th><th>条件の例</th></tr>
+  <tr><td>① 大きさ</td><td>数値（mm）</td><td>「30mm以上」「18mm以下」</td></tr>
+  <tr><td>② 透明感</td><td>透明／半透明／不透明</td><td>「透明である」「不透明以外」</td></tr>
+  <tr><td>③ 文字・記号</td><td>あり／なし</td><td>「文字記号あり」</td></tr>
+  <tr><td>④ 数</td><td>単体／複数（群れ）</td><td>「複数である」</td></tr>
+  <tr><td>⑤ 生物性</td><td>生物／無生物</td><td>「生物である」</td></tr>
+  <tr><td>⑥ 絵柄</td><td>動物・植物・人・食・器物・自然・紋章・乗物・建物</td><td>「絵柄が動物」「植物以外」</td></tr>
+  <tr><td>⑦ 形</td><td>円形／角形／不定形</td><td>「円形である」</td></tr>
+  <tr><td>⑧ 対称性</td><td>左右対称／非対称</td><td>「左右対称である」</td></tr>
+</table>
+<h3>商品トークンの読み方（デジタル試作の表現）</h3>
+<figure>
+<svg width="100%" viewBox="0 0 680 270" role="img"><title>商品トークンの読み方</title><desc>六角形のトークンを例に、8軸が見た目のどこに現れるかを示した図。</desc>
+  <line x1="218" y1="60" x2="300" y2="100" stroke="#5a6172" stroke-width="1"/>
+  <line x1="218" y1="135" x2="282" y2="135" stroke="#5a6172" stroke-width="1"/>
+  <line x1="218" y1="210" x2="300" y2="172" stroke="#5a6172" stroke-width="1"/>
+  <line x1="462" y1="60" x2="380" y2="100" stroke="#5a6172" stroke-width="1"/>
+  <line x1="462" y1="135" x2="398" y2="135" stroke="#5a6172" stroke-width="1"/>
+  <line x1="462" y1="185" x2="404" y2="168" stroke="#5a6172" stroke-width="1"/>
+  <line x1="462" y1="228" x2="352" y2="196" stroke="#5a6172" stroke-width="1"/>
+  <line x1="218" y1="248" x2="318" y2="206" stroke="#5a6172" stroke-width="1"/>
+  <polygon points="340,77 390,106 390,164 340,193 290,164 290,106" fill="hsl(30,42%,30%)" fill-opacity="0.55" stroke="hsl(30,62%,66%)" stroke-width="3"/>
+  <line x1="318" y1="124" x2="334" y2="105" stroke="#ffffff" stroke-width="2.5" opacity="0.5" stroke-linecap="round"/>
+  <circle cx="382" cy="92" r="5" fill="hsl(30,62%,66%)"/>
+  <text x="340" y="146" font-size="26" text-anchor="middle">🐾</text>
+  <text x="340" y="188" font-size="13" text-anchor="middle" fill="hsl(30,62%,66%)" opacity="0.95">✶</text>
+  <text x="212" y="56" font-size="12" fill="#d8d2c6" text-anchor="end">形＝輪郭（円/角/不定形）</text>
+  <text x="212" y="74" font-size="11" fill="#9a948a" text-anchor="end">大きさ＝トークンの直径（mm）</text>
+  <text x="212" y="131" font-size="12" fill="#d8d2c6" text-anchor="end">透明感＝透け具合</text>
+  <text x="212" y="149" font-size="11" fill="#9a948a" text-anchor="end">（光の差し込みが入る）</text>
+  <text x="212" y="214" font-size="12" fill="#d8d2c6" text-anchor="end">絵柄＝中央の紋様</text>
+  <text x="212" y="252" font-size="12" fill="#d8d2c6" text-anchor="end">数＝紋様の数（群れは3つ並ぶ）</text>
+  <text x="468" y="56" font-size="12" fill="#d8d2c6">非対称＝隅の小さな点</text>
+  <text x="468" y="74" font-size="11" fill="#9a948a">（対称なら点なし）</text>
+  <text x="468" y="131" font-size="12" fill="#d8d2c6">色相＝絵柄カテゴリ</text>
+  <text x="468" y="149" font-size="11" fill="#9a948a">鮮やか＝生物／くすみ＝無生物</text>
+  <text x="468" y="189" font-size="12" fill="#d8d2c6">輪郭線＝同系の明色</text>
+  <text x="468" y="232" font-size="12" fill="#d8d2c6">✶刻印＝文字・記号あり</text>
+</svg>
+<figcaption>正確な値はマウスオーバー／タップで表示。客カード側にも「ほしい品」の薄いゴーストが描かれる。</figcaption>
+</figure>
+<h3>客のレア度</h3>
+<table>
+  <tr><th>レア度</th><th>条件数</th><th>vp（獲得コイン）</th><th>各自デッキ内</th><th>見た目</th></tr>
+  <tr><td><span class="seal C">C</span> コモン</td><td>3</td><td>1</td><td>12枚</td><td>封蝋＝銅</td></tr>
+  <tr><td><span class="seal UC">UC</span> アンコモン</td><td>4</td><td>2</td><td>6枚</td><td>封蝋＝銀青</td></tr>
+  <tr><td><span class="seal R">R</span> レア（神の依代）</td><td>5</td><td>4</td><td>2枚</td><td>封蝋＝金・カード発光</td></tr>
+</table>
+
+<h2 id="s5">⑤ 判定と経済</h2>
+<h3>判定のルール</h3>
+<ul class="dash">
+  <li>客ごとに「自分のピンが満たした条件数」を両者で比べ、<b>多い側が獲得</b>。</li>
+  <li><b>同点＝折半</b>（vp÷2 を切り上げて両者が獲得。既定。⚙設定で「流れ＝誰も取れない」「両取り」にも変更可）。</li>
+  <li>両者とも商品を出していない客（0対0）は、設定に関わらず<b>流れ</b>（誰も獲得できない）。</li>
+</ul>
+<h3>コイン経済 — チップ循環</h3>
+<figure>
+<svg width="100%" viewBox="0 0 680 240" role="img"><title>チップ循環の図</title><desc>自分のプールと手元の間をチップが循環し、手元20枚で強制勝利となる図。</desc>
+  <rect x="60" y="70" width="200" height="100" rx="10" fill="#1b2130" stroke="#2a3350" stroke-width="2"/>
+  <text x="160" y="105" font-size="14" fill="#cfe6f0" text-anchor="middle">自分のプール</text>
+  <text x="160" y="128" font-size="12" fill="#9a948a" text-anchor="middle">残り17枚（はじめは20枚）</text>
+  <rect x="420" y="70" width="200" height="100" rx="10" fill="#33281a" stroke="#5d4426" stroke-width="2"/>
+  <text x="520" y="100" font-size="14" fill="#f4c069" text-anchor="middle">手元 ＝ 得点</text>
+  <text x="520" y="122" font-size="12" fill="#9a948a" text-anchor="middle">種銭3枚からスタート</text>
+  <text x="520" y="144" font-size="12" fill="#9a948a" text-anchor="middle">遺物の支払いもここから</text>
+  <path d="M 268 95 C 320 75, 360 75, 412 95" fill="none" stroke="#7fe0a0" stroke-width="2.5"/>
+  <polygon points="412,95 398,88 401,99" fill="#7fe0a0"/>
+  <text x="340" y="68" font-size="12" fill="#7fe0a0" text-anchor="middle">客を獲得 → vp分を手元へ</text>
+  <path d="M 412 148 C 360 168, 320 168, 268 148" fill="none" stroke="#e07f7f" stroke-width="2.5"/>
+  <polygon points="268,148 282,155 279,144" fill="#e07f7f"/>
+  <text x="340" y="186" font-size="12" fill="#e07f7f" text-anchor="middle">遺物コストを支払う → プールへ戻る（＝得点が減る）</text>
+  <rect x="430" y="14" width="180" height="34" rx="8" fill="#2a1f06" stroke="#f4a02a" stroke-width="2"/>
+  <text x="520" y="37" font-size="13" fill="#f4c069" text-anchor="middle">⚡ 手元20枚＝即勝利</text>
+  <line x1="520" y1="48" x2="520" y2="68" stroke="#f4a02a" stroke-width="1.5"/>
+  <text x="340" y="222" font-size="11" fill="#9a948a" text-anchor="middle">相手とのコイン移転も各自のプール経由（相手は1枚をプールへ戻し、自分は1枚をプールから取る）＝チップは混ざらない</text>
+</svg>
+</figure>
+<ul class="dash">
+  <li>手元のチップ＝<b>獲得点＝お金＝最終得点</b>。遺物に使うと最終得点が直接減る（使いどころの駆け引き）。</li>
+  <li><b>⚡強制勝利</b>：手元が<b>20枚</b>に達したフェーズの終了時、その場で勝利（既定。⚙で22/25/なしに変更可）。</li>
+  <li>誰も20に達しないまま5ターン終えたら、<b>コインが多い方の勝ち</b>。同数は引き分け。</li>
+</ul>
+
+<h2 id="s6">⑥ 遺物 — コインで使うアクティブカード（全14種）</h2>
+<div class="panel">
+<b>運用ルール</b>
+<ul class="dash">
+  <li>各自<b>同一構成の山10枚</b>（初期セット＝下記「初期セット入り」の10種×各1枚。残り4種は将来のデッキ構築で解禁）。</li>
+  <li>毎ターン開始時に<b>1枚ドロー</b>。手札は持ち越し可・<b>上限なし</b>・マリガンなし。</li>
+  <li>使用は表向きで宣言し、<b>コインを支払う</b>（手元→自分のプールへ。＝最終得点が減る）。</li>
+  <li>宣言タイミングは「公開直後」「調整中」「判定直前」「片付け時」の4種。<b>公開直後・判定直前の窓は両者同時に伏せて出し、先行側から解決</b>。</li>
+  <li>価格帯の目安：<b>1</b>＝テンポ・情報／<b>2</b>＝1客の勝敗を動かす／<b>3〜4</b>＝切り札。</li>
+</ul>
+</div>
+<div class="cards">
+<div class="relic"><span class="cost">1</span><div class="sys">香炉 ─ 誘引</div><div class="rname">誘いの香</div><div class="body"><span class="timing">公開直後</span>場の客 2 人の位置を入れ替える（両者の対応に影響）。</div><div class="meta">初期セット入り</div></div>
+<div class="relic"><span class="cost">2</span><div class="sys">髑髏 ─ 呪詛</div><div class="rname">忘却の髑髏</div><div class="body"><span class="timing">公開直後</span>客 1 人を場から取り除く（誰も獲得できない）。</div><div class="meta">初期セット入り</div></div>
+<div class="relic"><span class="cost">2</span><div class="sys">錘 ─ 重圧</div><div class="rname">沈黙の錘</div><div class="body"><span class="timing">調整中（手番消費）</span>相手の残り入替を 1 減らす。</div><div class="meta">初期セット入り</div></div>
+<div class="relic"><span class="cost">1</span><div class="sys">砂時計 ─ 巻戻</div><div class="rname">砂の還流</div><div class="body"><span class="timing">調整中</span>このターン、自分の入替上限 +1。</div><div class="meta">初期セット入り</div></div>
+<div class="relic"><span class="cost">1</span><div class="sys">賽 ─ 賭博</div><div class="rname">運命の賽</div><div class="body"><span class="timing">調整中</span>宣言：この判定で自分が 3 人以上獲得（または獲得 vp 合計 3 以上）なら +3 コイン。届かなければ没収。※同点=流れ設定では「2 人以上獲得」。</div><div class="meta">初期セット入り</div></div>
+<div class="relic"><span class="cost">2</span><div class="sys">盃 ─ 充溢</div><div class="rname">満ちる盃</div><div class="body"><span class="timing">判定直前</span>自分のピン 1 つを、その客の判定で満たした条件数 +1 として扱う。</div><div class="meta">初期セット入り</div></div>
+<div class="relic"><span class="cost">2</span><div class="sys">髑髏 ─ 呪詛</div><div class="rname">凋落の呪印</div><div class="body"><span class="timing">判定直前</span>相手のピン 1 つを、満たした条件数 −1 として扱う。</div><div class="meta">初期セット入り</div></div>
+<div class="relic"><span class="cost">4</span><div class="sys">盃 ─ 充溢（大）</div><div class="rname">黄金の酒宴</div><div class="body"><span class="timing">判定直前</span>このターン、自分のピン全部が条件数 +1 として扱われる。</div><div class="meta">構築解禁時</div></div>
+<div class="relic"><span class="cost">2</span><div class="sys">鍵 ─ 開錠</div><div class="rname">開かずの扉の鍵</div><div class="body"><span class="timing">公開直後</span>自分の客デッキの上から 1 枚を追加で場に出す（このターンのみ場 5 客）。※空きスロットとの入替も 1 回と数えて可。誰も商品を出していない客は流れ。</div><div class="meta">構築解禁時</div></div>
+<div class="relic"><span class="cost">2</span><div class="sys">天秤 ─ 等価</div><div class="rname">等価の天秤</div><div class="body"><span class="timing">調整中（手番消費）</span>自分の陳列ピン 1 つと、ケース内の未使用ピン 1 つを交換する。</div><div class="meta">構築解禁時</div></div>
+<div class="relic"><span class="cost">2</span><div class="sys">仮面 ─ 偽相</div><div class="rname">偽相の仮面</div><div class="body"><span class="timing">判定直前</span>自分のピン 1 つの「絵柄」を任意の値として扱う。</div><div class="meta">初期セット入り</div></div>
+<div class="relic"><span class="cost">1</span><div class="sys">楔 ─ 不動</div><div class="rname">不動の楔</div><div class="body"><span class="timing">公開直後</span>客 1 人を指定。このターン、その客は移動も除外もされない。</div><div class="meta">初期セット入り</div></div>
+<div class="relic"><span class="cost">1</span><div class="sys">羅針 ─ 導き</div><div class="rname">導きの羅針</div><div class="body"><span class="timing">片付け時</span>次のターンに自分が出す客 2 枚を見る。</div><div class="meta">初期セット入り</div></div>
+<div class="relic"><span class="cost">2</span><div class="sys">遺灰 ─ 残響</div><div class="rname">残響の灰</div><div class="body"><span class="timing">自分がカードを使えるタイミング</span>自分の使用済み遺物 1 枚を手札に戻す（残響の灰自身は不可）。</div><div class="meta">構築解禁時</div></div>
+</div>
+<p class="note">関連：<b>ヤルナの切札</b>（1試合1回、任意の客1人を「流れ」にする）は遺物とは別枠の特殊カードとして後フェーズで実装予定。</p>
+
+<h2 id="s7">⑦ 主人公 — 十二人から1人を選ぶ（パッシブ＋必殺技）</h2>
+<div class="panel">
+<b>共通ルール</b>
+<ul class="dash">
+  <li>試合開始時に1枚を<b>公開で自由選択</b>し、自分のマットの「主人公」枠に置く（腕比べのミラー検証では両者同一を推奨）。</li>
+  <li><b>パッシブ</b>＝常時自動・コストなし。<b>必殺技</b>＝1試合1回・コイン消費のアクティブ。</li>
+  <li>「同点」を参照する能力（ガッヅォル/シジマ/賽）は同点処理の設定で読み替えあり（カード内に併記）。</li>
+</ul>
+</div>
+<div class="cards">
+<div class="hero"><div class="htag">無欲</div><div class="hname">ヴァルニエル</div><div class="body"><b>パッシブ「空白の器」</b>：自分が支払う遺物コストは常に 1 減る（最低 1）。</div><div class="body"><b>必殺技「無の帳」</b>（コスト0・1試合1回）：このターン、両者とも遺物と必殺技を使用できない。</div></div>
+<div class="hero"><div class="htag">知識</div><div class="hname">ヴィオラ・セルンティア</div><div class="body"><b>パッシブ「先読の瞳」</b>：仕込みの前に、このターン自分が場に出す客 2 枚を見てよい。</div><div class="body"><b>必殺技「全知の頁」</b>（コスト2・1試合1回）：仕込みの前に、このターン場に出る 4 枚（両者の客）を全て見る。</div></div>
+<div class="hero"><div class="htag">王権</div><div class="hname">ガッヅォル・レグシオール</div><div class="body"><b>パッシブ「玉座は空かぬ」</b>：各ターン最初の同点判定 1 件を、折半でなくあなたが総取りする（同点=流れ設定では「最初に流れる客 1 人を獲得」）。</div><div class="body"><b>必殺技「勅令」</b>（コスト3・1試合1回・判定直前）：客 1 人を指定。その判定であなたの条件数 +1、相手 −1。</div></div>
+<div class="hero"><div class="htag">不朽</div><div class="hname">リーノ・マルモット</div><div class="body"><b>パッシブ「朽ちぬ細工」</b>：あなたのピンは「条件数 −1」系の効果の対象にならない（勅令も −1 側のみ無効。+1 側は通る）。</div><div class="body"><b>必殺技「未完の最終工程」</b>（コスト2・1試合1回・判定直前）：自分のピン 1 つを満たした条件数 +2 として扱う。</div></div>
+<div class="hero"><div class="htag">食欲</div><div class="hname">リリゲウ</div><div class="body"><b>パッシブ「際限なき食欲」</b>：C 客を獲得するたび +1 コイン（ターン上限 1・試合上限 4）。</div><div class="body"><b>必殺技「丸呑み」</b>（コスト2・1試合1回・判定直前）：C 客 1 人を指定し、条件判定を行わずあなたが獲得する。</div></div>
+<div class="hero"><div class="htag">睡眠</div><div class="hname">チュウカット・アンモク</div><div class="body"><b>パッシブ「微睡の特権」</b>：先行/後攻の決定時、あなたが順番を選ぶ（主人公能力は先行設定より優先。ミラーで両者同能力なら設定に従う）。</div><div class="body"><b>必殺技「昏き子守唄」</b>（コスト2・1試合1回・調整開始時）：このターン相手は入替できない（あなたは可能）。</div></div>
+<div class="hero"><div class="htag">性欲</div><div class="hname">セラフィカ・ディエンダス</div><div class="body"><b>パッシブ「蜜の徴収」</b>：相手が vp2 以上の客（UC/R）を獲得するたび、相手から 1 コインがあなたへ移る（ターン上限 1・試合上限 3。移転＝相手は 1 枚を自分のプールへ戻し、あなたは 1 枚を自分のプールから取る）。</div><div class="body"><b>必殺技「篝火の誘惑」</b>（コスト2・1試合1回・調整中）：あなたのピン 1 つと相手のピン 1 つの位置を入れ替える。</div></div>
+<div class="hero"><div class="htag">金銭</div><div class="hname">クラウベ・サトリ</div><div class="body"><b>パッシブ「商いの種」</b>：試合開始時、種銭として +2 コインを得る（最終得点にも数える）。</div><div class="body"><b>必殺技「買い占め」</b>（コストX・1試合1回）：客 1 人を「その客の vp+1」のコインで即購入する（判定なしで獲得）。</div></div>
+<div class="hero"><div class="htag">物欲</div><div class="hname">シジマ・ノーメン</div><div class="body"><b>パッシブ「こぼれ幸い」</b>：同点判定が起きるたび +1 コイン（ターン上限 1）（同点=流れ設定では「流れた客 1 人につき +1」）。</div><div class="body"><b>必殺技「総ざらい」</b>（コスト3・1試合1回・判定後）：このターンの同点判定の客を全てあなたが総取りする（流れ設定では「流れた客を全て獲得」）。</div></div>
+<div class="hero"><div class="htag">自由</div><div class="hname">ナギ・レス</div><div class="body"><b>パッシブ「変幻の手」</b>：あなたの陳列②に置かれているピンは、「絵柄」の条件を常に満たす扱い。</div><div class="body"><b>必殺技「掟破りの夜」</b>（コスト2・1試合1回・調整中）：このターン、あなたの入替回数は無制限。</div></div>
+<div class="hero"><div class="htag">遊興</div><div class="hname">フルル・メモタン</div><div class="body"><b>パッシブ「遊び人の運」</b>：「運命の賽」系の賭けに成功した時、支払ったコインが戻り、さらに +1。</div><div class="body"><b>必殺技「倍々の宴」</b>（コスト2・1試合1回・判定直前）：このターンあなたが獲得する客の vp は 2 倍。獲得 0 なら追加で −2 コイン。</div></div>
+<div class="hero"><div class="htag">闘争</div><div class="hname">デスデス・モルテシオン</div><div class="body"><b>パッシブ「圧倒の血」</b>：条件差 2 以上で客に競り勝つたび +1 コイン（ターン上限 2）。</div><div class="body"><b>必殺技「果し状」</b>（コスト2・1試合1回・公開直後）：客 1 人を指定して決闘。その客に勝てば vp 2 倍、負ければ相手に +1 コイン。</div></div>
+</div>
+
+<h2 id="s8">⑧ 設定バリエーションとアナログ運用</h2>
+<h3>調整できるパラメータ（⚙設定／太字＝既定）</h3>
+<table>
+  <tr><th>項目</th><th>選択肢</th></tr>
+  <tr><td>同点処理</td><td><b>折半（split・切り上げ）</b>／流れ（none）／両取り（both）※能力の読み替えは正本 H2 参照</td></tr>
+  <tr><td>先行</td><td><b>劣勢側先行</b>（同点ならターン交代）／毎ターン交代／P1固定</td></tr>
+  <tr><td>強制勝利ライン</td><td><b>20</b>／22／25／なし</td></tr>
+  <tr><td>種銭</td><td>0／<b>3</b>／5／8</td></tr>
+  <tr><td>ターン数</td><td>3／<b>5</b>（ピン数と連動）</td></tr>
+  <tr><td>デッキ</td><td><b>通常（左右別）</b>／ミラー（両者同一・腕比べ用）</td></tr>
+  <tr><td>展開</td><td><b>毎回ランダム</b>／固定シード（再現用）</td></tr>
+</table>
+<h3>アナログで遊ぶ場合のメモ</h3>
+<ul class="dash">
+  <li>コインは<b>2色のチップ各20枚</b>。支払い・移転はすべて「自分のプール経由」なのでチップは混ざらない。</li>
+  <li>仕込みの秘匿は<b>ついたて</b>（または手元で並べてから一斉公開）。</li>
+  <li>同時伏せの宣言窓は「出す物がなくても、何かを伏せる（出さない人はダミー）」を作法にすると読み合いが保てる。</li>
+  <li>「待った」（1手戻す）はデジタル試作の補助機能。アナログでは相手と合意の上で。</li>
+</ul>
+
+<h2 id="s9">⑨ 開発状況と資料</h2>
+<h3>いま動いているもの（デジタル試作）</h3>
+<ul class="dash">
+  <li>コアルール一式（仕込み→公開→調整→判定×5ターン、チップ経済、⚡強制勝利）が<b>ブラウザで動く</b>（index.html を開くだけ・2人対戦／AI対戦）。</li>
+  <li>卓上ビジュアル（夜の卓・革マット・封蝋つき紙カード・アクセサリーケース）、初見チュートリアル、📊統計記録（条件別平均・TSV出力）、セルフテスト19項目。</li>
+  <li>遺物・主人公は<b>ルール確定済み・実装はこれから</b>（マット上に置き場だけ印刷済み）。</li>
+</ul>
+<h3>これからの実装順</h3>
+<div class="flow">
+  <span class="step">記録の強化 ✓済</span><span class="arr">▶</span>
+  <span class="step">Phase 2 遺物</span><span class="arr">▶</span>
+  <span class="step">Phase 3 主人公パッシブ</span><span class="arr">▶</span>
+  <span class="step">Phase 3.5 必殺技</span><span class="arr">▶</span>
+  <span class="step">Phase 7 デッキ構築</span>
+</div>
+<h3>数字のメモ（自動対戦による実測）</h3>
+<p class="note">1ターンの獲得は平均2〜3コイン。旧既定（同点=流れ・種銭0）では勝者≈15／中央値12。現既定（折半＋種銭3）では勝者が⚡20に届く設計で、<b>「貯めて駆け込む」か「遺物に使って妨害する」かのレース</b>になる。20到達率・到達ターンは記録機能で観測中（必要なら線を22/25に調整）。</p>
+<h3>正本ドキュメント（プロジェクト内）</h3>
+<table>
+  <tr><th>ファイル</th><th>内容</th></tr>
+  <tr><td>docs/prototype/README.md</td><td>現在地（最初に読む）</td></tr>
+  <tr><td>docs/prototype/spec.md</td><td>正式仕様・決定ログ D1〜D25</td></tr>
+  <tr><td>docs/prototype/open-issues.md</td><td>決定トラッカー（H2＝同点設定の読み替え表／H3＝確定済み調整）</td></tr>
+  <tr><td>docs/prototype/playtest-log.md</td><td>実測統計・テスト記録</td></tr>
+  <tr><td>docs/eternal-market_unified_review_v1_20260611.html</td><td>チーム統合レビュー（採否の経緯・ストーリー全文）</td></tr>
+  <tr><td>index.html ＋ data.js</td><td>動くデジタル試作（開くだけ）</td></tr>
+</table>
+
+<div class="src">
+本資料：docs/eternal-market_overview_v1_20260612.html（2026-06-12 作成）。記載のルール・能力・コストはすべて 2026-06-12 時点の確定値（spec.md 決定ログ D1〜D25／open-issues.md 決定ログ・H2・H3 準拠）。ストーリー本文は統合レビュー資料より原文転載。
+</div>
+
+</div>
+</body>
+</html>
